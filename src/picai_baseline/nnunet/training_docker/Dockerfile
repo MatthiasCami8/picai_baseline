@@ -12,9 +12,15 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends graphviz && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
+# Environment variables to write to cloud storage
+ENV BUCKET picai_test
+ENV ROOT_FOLDER root-folder
+
 RUN git config --global advice.detachedHead false && \
-    git clone https://github.com/DIAGNijmegen/nnUNet.git /home/user/nnunet && \
-    git -C /home/user/nnunet checkout 1.7.0-3 && \
+    #git clone https://github.com/DIAGNijmegen/nnUNet.git /home/user/nnunet && \
+    git clone https://github.com/MatthiasCami8/nnUNet.git /home/user/nnunet && \
+    #git -C /home/user/nnunet checkout 1.7.0-3 && \
     chown -R user /home/user/nnunet && \
     pip3 install \
         -e /home/user/nnunet \
@@ -35,6 +41,9 @@ RUN pip3 install \
     picai_prep==2.1.2 \
     picai_baseline==0.8.2 \
     mlxtend==0.19.0
+
+# Install GCS functionality
+RUN pip3 install google-cloud-storage==2.9.0
 
 # copy custom files to nnUNet folder
 COPY nnUNetTrainerV2_focalLoss.py /tmp/nnUNetTrainerV2_focalLoss.py
