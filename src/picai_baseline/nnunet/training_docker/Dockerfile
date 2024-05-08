@@ -62,6 +62,10 @@ COPY run_training.py /tmp/run_training.py
 RUN SITE_PKG=`pip3 show nnunet | grep "Location:" | awk '{print $2}'` && \
     mv /tmp/run_training.py "$SITE_PKG/nnunet/run/run_training.py"
 
+RUN pip3 install numpy==1.24.1
+RUN pip3 install scikit-image==0.19.0
+RUN pip3 install scipy==1.10.0
+
 # Configure entrypoint
 COPY --chown=user nnunet_wrapper.py /home/user/nnunet_wrapper.py
 RUN chmod +x /home/user/nnunet_wrapper.py && \
